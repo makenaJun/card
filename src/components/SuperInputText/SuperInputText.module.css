@@ -1,0 +1,28 @@
+.wrapper {
+    position: relative;
+}
+
+.superInput,
+.errorInput {
+    border: 2px solid #797979;
+    border-radius: 4px;
+    background: #fff;
+    margin: 5px;
+}
+
+.errorInput {
+    border: 2px solid #d20101;
+}
+
+.error {
+    color: #fff;
+    background-color: #cd0000;
+    border: 1px solid #bd0000;
+    border-radius: 4px;
+    padding: 0 5px;
+    margin: 4px;
+    position: absolute;
+    z-index: 1000;
+    top: -23px;
+    right: 0;
+}
