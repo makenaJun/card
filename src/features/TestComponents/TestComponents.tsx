@@ -1,7 +1,7 @@
 import React from 'react';
-import SuperCheckbox from '../../components/SuperCheckbox/SuperCheckbox';
-import SuperInputText from '../../components/SuperInputText/SuperInputText';
-import SuperButton from '../../components/SuperButton/SuperButton';
+import SuperCheckbox from '../../main/ui/common/SuperCheckbox/SuperCheckbox';
+import SuperInputText from '../../main/ui/common/SuperInputText/SuperInputText';
+import SuperButton from '../../main/ui/common/SuperButton/SuperButton';
 import styles from './TestComponents.module.css';
 
 export const TestComponents = () => {
