@@ -4,7 +4,7 @@ const settings = {
     withCredentials: false,
 }
 const instance = axios.create({
-    baseURL: 'https://https://neko-back.herokuapp.com/2.0',
+    baseURL: 'https://https://neko-back.herokuapp.com/2.0/',
     ...settings
 })
 
@@ -88,7 +88,7 @@ export type SendPasswordResponseType = {
 export const herokuAPI = {
     getPing() {
         let date = new Date().getTime()
-        return instance.get(`/ping? + frontTime=${date}`);
+        return instance.get(`ping? + frontTime=${date}`);
     },
     authLogin(data: LoginParamsType) {
         return instance.post<LoginResponseType>('auth/login', data);
