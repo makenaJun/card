@@ -87,6 +87,7 @@ export type SendPasswordResponseType = {
 
 
 // api
+
 export const herokuAPI = {
     getPing() {
         let date = new Date().getTime()
