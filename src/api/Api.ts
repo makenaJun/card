@@ -8,6 +8,7 @@ const instance = axios.create({
     ...settings
 })
 
+//types
 
 export type LoginParamsType = {
     email: string
@@ -83,6 +84,7 @@ export type SendPasswordResponseType = {
     info: string,
     error?: string,
 }
+
 
 // api
 export const herokuAPI = {
