@@ -106,7 +106,7 @@ export const herokuAPI = {
         return instance.put<UserResponseType>('auth/me', data);
     },
     unLogin() {
-        return instance.delete<UnLoginResponseType>('auth/me');
+        return instance.delete<UnLoginResponseType>('auth/me'); //types????
     },
     recovery(data: RecoveryDataType) {
         return instance.post<RecoveryResponseType>('auth/forgot', data);
