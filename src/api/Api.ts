@@ -1,10 +1,13 @@
-import axios from 'axios'
+import axios from "axios"
+
+//use obj "process" for apply right url in depending with current brunch
+const isDev = process.env.NODE_ENV === "development"
 
 const settings = {
-    withCredentials: false,
+    withCredentials: true,
 }
 const instance = axios.create({
-    baseURL: 'https://https://neko-back.herokuapp.com/2.0/',
+    baseURL: isDev ? "http://localhost:7542/2.0/" : "https://neko-back.herokuapp.com/2.0/",
     ...settings
 })
 
@@ -85,34 +88,44 @@ export type SendPasswordResponseType = {
     error?: string,
 }
 
+export type ResponseErrorType = {
+    error: string
+    email: string
+    in: string
+}
+
 
 // api
 
 export const herokuAPI = {
     getPing() {
         let date = new Date().getTime()
-        return instance.get(`ping? + frontTime=${date}`);
+        return instance.get(`ping? + frontTime=${date}`)
     },
     authLogin(data: LoginParamsType) {
-        return instance.post<LoginResponseType>('auth/login', data);
+        return instance.post<LoginResponseType & ResponseErrorType>("auth/login", data)
+            .then(res => res.data)
+            .catch((e) => {
+                return e.response.data
+            })
     },
     authRegister(data: RegisterParamsType) {
-        return instance.post<RegisterResponseType>('auth/register', data);
+        return instance.post<RegisterResponseType>("auth/register", data)
     },
     authMe() {
-        return instance.post<UserResponseType>('auth/me');
+        return instance.post<UserResponseType>("auth/me")
     },
     changeNameAvatar(data: ChangeNameDataType) {
-        return instance.put<UserResponseType>('auth/me', data);
+        return instance.put<UserResponseType>("auth/me", data)
     },
     unLogin() {
-        return instance.delete<UnLoginResponseType>('auth/me'); //types????
+        return instance.delete<UnLoginResponseType>("auth/me") //types????
     },
     recovery(data: RecoveryDataType) {
-        return instance.post<RecoveryResponseType>('auth/forgot', data);
+        return instance.post<RecoveryResponseType>("auth/forgot", data)
     },
     sendPassword(data: SendPasswordDataType) {
-        return instance.post<SendPasswordResponseType>('auth/set-new-password', data);
+        return instance.post<SendPasswordResponseType>("auth/set-new-password", data)
     },
 
 }
