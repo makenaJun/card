@@ -23,7 +23,8 @@ const Routes = () => {
 
     return (
         <div style={stylesLinksWrapper}>
-            <Link to={PATH.TEST} title={'Тестовая страница'} >Test</Link>
+
+            <Link to={PATH.TEST} title={'Тестовая страница'}>Test</Link>
             <Link to={PATH.LOGIN} title={'Страница логинизации'}>Login</Link>
             <Link to={PATH.PROFILE} title={'Страница профиля'}>Profile</Link>
             <Link to={PATH.REGISTRATION} title={'Страница регистрации'}>Registration</Link>
