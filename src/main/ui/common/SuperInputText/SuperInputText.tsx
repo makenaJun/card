@@ -6,7 +6,7 @@ type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
 type SuperInputTextPropsType = Omit<DefaultInputPropsType, "type"> & {
     onChangeText?: (value: string) => void
     onEnter?: () => void
-    onChangeType?: () => void
+    onClick?: () => void
     error?: string
     spanClassName?: string
     specialType?: "password" | "text"
@@ -20,7 +20,7 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
         error,
         className, spanClassName,
         type, specialType,
-        onChangeType,
+        onClick,
 
         ...restProps
     }
@@ -53,7 +53,7 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
                 onKeyPress={onKeyPressCallback}
                 className={finalInputClassName}
                 {...restProps}
-            /> <i>{specialType && <span className={s.eye} onClick={onChangeType}>eye</span>}</i>
+            /> <i>{specialType && <span className={s.eye} onClick={onClick}>eye</span>}</i>
             {error && <span className={finalSpanClassName}>{error}</span>}
         </div>
     )
