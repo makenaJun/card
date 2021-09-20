@@ -45,7 +45,6 @@ export const registration = (regData: RegisterParamsType): ThunkType =>
         let res: RegisterResponseType | ResponseRegistrationErrorType = await herokuAPI.authRegister(regData)
         if (res.error) {
             dispatch(setErrorRegistration(res.error? res.error: "Something wrong"))
-            dispatch(changeRegistrationStatus(false))
         } else {
             dispatch(changeRegistrationStatus(true))
         }
