@@ -1,5 +1,5 @@
 import {ThunkType} from "./store"
-import {herokuAPI, LoginParamsType, LoginResponseType, ResponseErrorType} from "../../api/Api"
+import {herokuAPI, LoginParamsType, LoginResponseType, ResponseLoginErrorType} from "../../api/Api"
 
 const initialState = {
     _id: "",
@@ -46,11 +46,12 @@ export const setError = (error: string) => {
 
 export const login = (data: LoginParamsType): ThunkType =>
     async (dispatch) => {
-        const res: LoginResponseType & ResponseErrorType = await herokuAPI.authLogin(data)
+        const res: LoginResponseType & ResponseLoginErrorType = await herokuAPI.authLogin(data)
         if (res.error) {
             dispatch(setError(res.error ? res.error: "Something wrong"))
+        } else {
+            dispatch(loginAC(res))
         }
-        dispatch(loginAC(res))
     }
 
 //Types
