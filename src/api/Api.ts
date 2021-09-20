@@ -88,10 +88,18 @@ export type SendPasswordResponseType = {
     error?: string,
 }
 
-export type ResponseErrorType = {
+export type ResponseLoginErrorType = {
     error: string
     email: string
     in: string
+}
+
+export type ResponseRegistrationErrorType = {
+    error: string
+    in: string
+    isEmailValid: boolean
+    isPassValid: boolean
+    passwordRegExp: string
 }
 
 
@@ -103,14 +111,17 @@ export const herokuAPI = {
         return instance.get(`ping? + frontTime=${date}`)
     },
     authLogin(data: LoginParamsType) {
-        return instance.post<LoginResponseType & ResponseErrorType>("auth/login", data)
+        return instance.post<LoginResponseType | ResponseLoginErrorType>("auth/login", data)
             .then(res => res.data)
             .catch((e) => {
                 return e.response.data
             })
     },
     authRegister(data: RegisterParamsType) {
-        return instance.post<RegisterResponseType>("auth/register", data)
+        return instance.post<RegisterResponseType | ResponseRegistrationErrorType>("auth/register", data)
+            .catch((e)=>{
+            return e.response.data
+        })
     },
     authMe() {
         return instance.post<UserResponseType>("auth/me")
