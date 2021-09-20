@@ -36,6 +36,7 @@ export type LoginResponseType = {
 export type RegisterParamsType = {
     email: string,
     password: string,
+    repeatPassword: string
 }
 
 export type RegisterResponseType = {
