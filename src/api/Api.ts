@@ -1,21 +1,17 @@
-import axios from 'axios'
+import axios from "axios"
+
+//use obj "process" for apply right url in depending with current brunch
+const isDev = process.env.NODE_ENV === "development"
 
 const settings = {
-    withCredentials: false,
+    withCredentials: true,
 }
 const instance = axios.create({
-    // baseURL: 'https://https://neko-back.herokuapp.com/2.0/',
-    baseURL: `http://localhost:7542/2.0/`,
+    baseURL: isDev ? "http://localhost:7542/2.0/" : "https://neko-back.herokuapp.com/2.0/",
     ...settings
 })
 
 //types
-export type PingResponseType = {
-    ping: number,
-    backTime: number,
-    frontTime: number,
-    info: string
-}
 
 export type LoginParamsType = {
     email: string
@@ -98,22 +94,22 @@ export type SendPasswordResponseType = {
 export const herokuAPI = {
     getPing() {
         let date = new Date().getTime()
-        return instance.get<PingResponseType>(`ping?frontTime=${date}`);
+        return instance.get(`ping? + frontTime=${date}`);
     },
-    isAuth() {
-        return instance.post<UserResponseType>('auth/me', {});
-    },
-    login(data: LoginParamsType) {
+    authLogin(data: LoginParamsType) {
         return instance.post<LoginResponseType>('auth/login', data);
-    },
-    logout() {
-        return instance.delete<UnLoginResponseType>('auth/me'); //types????
     },
     authRegister(data: RegisterParamsType) {
         return instance.post<RegisterResponseType>('auth/register', data);
     },
+    authMe() {
+        return instance.post<UserResponseType>('auth/me');
+    },
     changeNameAvatar(data: ChangeNameDataType) {
         return instance.put<UserResponseType>('auth/me', data);
+    },
+    unLogin() {
+        return instance.delete<UnLoginResponseType>('auth/me'); //types????
     },
     recovery(data: RecoveryDataType) {
         return instance.post<RecoveryResponseType>('auth/forgot', data);

@@ -1,0 +1,13 @@
+.formContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    border: 2px solid;
+    width: 300px;
+}
+.error {
+    color: red;
+}

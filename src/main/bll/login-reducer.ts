@@ -22,7 +22,7 @@ export const loginReducer = (state: typeof initialState = initialState, action: 
         case 'login/SUCCESS-LOGOUT':
             return {...state, isAuth: action.isAuth,}
         default:
-            return state
+            return state;
     }
 }
 
