@@ -6,7 +6,7 @@ type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
 type SuperInputTextPropsType = Omit<DefaultInputPropsType, 'type'> & {
     onChangeText?: (value: string) => void
     onEnter?: () => void
-    error?: string
+    error?: string | null
     spanClassName?: string
 }
 
