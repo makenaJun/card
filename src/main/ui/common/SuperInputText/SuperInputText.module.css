@@ -23,6 +23,6 @@
     margin: 4px;
     position: absolute;
     z-index: 1000;
-    top: -23px;
+    bottom: 23px;
     right: 0;
 }

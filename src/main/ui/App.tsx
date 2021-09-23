@@ -24,7 +24,7 @@ function App() {
                 <Route path={PATH.REGISTRATION} render={() => <Registration/>}/>
                 <Route path={PATH.REMINDER} render={() => <Reminder/>}/>
                 <Route path={PATH.NEW_PASS} render={() => <NewPassword/>}/>
-                <Route path={PATH.PASS_RECOVERY} render={() => <PassRecovery/>}/>
+                <Route path={PATH.PASS_RECOVERY} render={() => <PassRecovery email={'test@mail.com'}/>}/>
                 <Route path={PATH.TEST} render={() => <TestComponents/>}/>
                 <Route path={PATH.ERROR404} render={() => <Error404/>}/>
                 <Redirect from={'*'} to={PATH.ERROR404}/>
