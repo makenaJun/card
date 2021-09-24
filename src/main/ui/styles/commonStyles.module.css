@@ -1,0 +1,40 @@
+.inputWrapper {
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.errorWrapper {
+    height: 1.2rem;
+}
+
+.error {
+    background-color: #c40000;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.viewImg {
+    position: absolute;
+    right: 10px;
+    top: calc(1rem / 2);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.bigViewImg {
+    position: absolute;
+    right: 10px;
+    top: calc(.8rem);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.bigInput{
+    font-size: 1.2rem;
+    padding: 5px;
+}
+.bigButton{
+    font-size: 1.2rem;
+}

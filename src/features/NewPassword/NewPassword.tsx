@@ -6,10 +6,14 @@ import noView from '../../main/ui/images/icon/no-view.svg';
 import {Redirect, useLocation} from 'react-router-dom';
 import {PATH} from '../../main/ui/routes/Routes';
 import Loader from '../../main/ui/common/Loader/Loader';
-import {cleanUpState, ResponseStatusType, setAppError, setNewPassword} from '../../main/bll/app-reducer';
+import {ResponseStatusType, setAppError} from '../../main/bll/app-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../main/bll/store';
 import newPassIcon from '../../main/ui/images/icon/folder.png';
+import SuperInputText from '../../main/ui/common/SuperInputText/SuperInputText';
+import {cleanup} from '../../main/helpers/clean';
+import {setNewPassword} from '../../main/bll/login-reducer';
+import commonStyles from '../../main/ui/styles/commonStyles.module.css';
 
 
 export const NewPassword = () => {
@@ -29,11 +33,8 @@ export const NewPassword = () => {
 
     const token = location.pathname.split('/')[2];
 
-    const cleanup = () => {
-        dispatch(cleanUpState());
-    }
     useEffect(() => {
-        return cleanup;
+        return () => cleanup(dispatch);
     }, []);
 
     const sendPasswordHandler = () => {
@@ -52,30 +53,32 @@ export const NewPassword = () => {
         <div className={styles.wrapper}>
             <h1>Create new password</h1>
             <img src={newPassIcon} alt={'New Password'}/>
-            <div className={styles.inputWrapper}>
-                <input type={visibleOneInput ? 'text' : 'password'}
+            <div className={commonStyles.inputWrapper}>
+                <SuperInputText type={visibleOneInput ? 'text' : 'password'}
                        value={onePassword}
                        onChange={(e) => setOnePassword(e.currentTarget.value)}
                        placeholder={'New password'}/>
 
-                <img className={styles.viewImg}
+                <img className={commonStyles.viewImg}
                      onClick={() => setVisibleOneInput(!visibleOneInput)}
                      src={visibleOneInput ? noView : view}
                      alt={'view'}/>
             </div>
 
-            <div className={styles.inputWrapper}>
-                <input type={visibleTwoInput ? 'text' : 'password'}
+            <div className={commonStyles.inputWrapper}>
+                <SuperInputText type={visibleTwoInput ? 'text' : 'password'}
                        value={twoPassword}
                        onChange={(e) => setTwoPassword(e.currentTarget.value)}
                        placeholder={'Repeat new password'}/>
 
                 <img src={visibleTwoInput ? noView : view}
-                     className={styles.viewImg}
+                     className={commonStyles.viewImg}
                      onClick={() => setVisibleTwoInput(!visibleTwoInput)}
                      alt={'view'}/>
             </div>
-            {error && <div className={styles.error}>{error}</div>}
+            <div className={commonStyles.errorWrapper}>
+                {error && <span className={commonStyles.error}>{error}</span>}
+            </div>
             {status === 'loading' ? <Loader/> :
                 <SuperButton onClick={sendPasswordHandler}>Set new password</SuperButton>}
         </div>

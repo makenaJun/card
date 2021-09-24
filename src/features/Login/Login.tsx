@@ -1,52 +1,62 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import style from './Login.module.css'
-import {herokuAPI} from "../../api/Api";
-import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "../../main/bll/login-reducer";
-import {AppStateType} from "../../main/bll/store";
-import {Redirect} from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux';
+import {AppStateType} from '../../main/bll/store';
+import {Link, Redirect} from 'react-router-dom';
+import {PATH} from '../../main/ui/routes/Routes';
+import SuperInputText from '../../main/ui/common/SuperInputText/SuperInputText';
+import SuperCheckbox from '../../main/ui/common/SuperCheckbox/SuperCheckbox';
+import SuperButton from '../../main/ui/common/SuperButton/SuperButton';
+import {login} from '../../main/bll/login-reducer';
+import commonStyles from '../../main/ui/styles/commonStyles.module.css';
+import Loader from '../../main/ui/common/Loader/Loader';
+import {ResponseStatusType, setAppError} from '../../main/bll/app-reducer';
+import {cleanup} from '../../main/helpers/clean';
+import noView from '../../main/ui/images/icon/no-view.svg';
+import view from '../../main/ui/images/icon/view.svg';
 
+export const Login = () => {
+    const isAuth = useSelector<AppStateType, boolean>(state => state.login.isAuth);
+    const status = useSelector<AppStateType, ResponseStatusType>(state => state.app.status);
+    const error = useSelector<AppStateType, string | null>(state => state.app.error);
 
-herokuAPI.getPing()
-    .then(res => {
-        console.log("ping:" + ' ' + res.data.ping + 'ms')
-    })
+    let [email, setEmail] = useState<string>('');
+    let [password, setPassword] = useState<string>('');
+    let [rememberMe, setRememberMe] = useState<boolean>(false);
+    let [visibleInput, setVisibleInput] = useState<boolean>(false);
 
-export const Login = React.memo(() => {
-    const dispatch = useDispatch()
-    const isAuth = useSelector<AppStateType, boolean>(state => state.login.isAuth)
+    const dispatch = useDispatch();
 
-    let [email, setEmail] = useState<string>('')
-    let [password, setPassword] = useState<string>('')
-    let [rememberMe, setRememberMe] = useState<boolean>(false)
+    useEffect(() => {
+        return () => cleanup(dispatch);
+    }, []);
+
+    useEffect(() => {
+        error && dispatch(setAppError(null));
+    }, [email, password, rememberMe]);
 
 
     const changeHandlerEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.currentTarget.value)
+        setEmail(e.currentTarget.value);
     }, [setEmail])
 
     const changeHandlerPassword = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.currentTarget.value)
-    }, [setPassword])
+        setPassword(e.currentTarget.value);
+    }, [setPassword]);
 
     const changeHandlerRememberMe = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setRememberMe(e.target.checked)
-    }, [setRememberMe])
+        setRememberMe(e.target.checked);
+    }, [setRememberMe]);
 
-    const values = {
-        email: email,
-        password: password,
-        rememberMe: rememberMe
-    }
 
     const handlerSubmit = () => {
-        dispatch(loginTC(values))
+        const values = {
+            email,
+            password,
+            rememberMe,
+        }
+        dispatch(login(values))
     }
-
-
-    console.log(email)
-    console.log(password)
-    console.log(rememberMe)
 
     if (isAuth) {
         return <Redirect to={'/profile'}/>
@@ -61,45 +71,56 @@ export const Login = React.memo(() => {
                 </div>
                 <div className={style.inputBlock}>
                     <div>
-                        <span>Email</span>
                         <div className={style.input}>
-                            <input
-                                type={'email'}
-                                placeholder={'example@gmail.com'}
-                                onInput={changeHandlerEmail}
+                            <SuperInputText
+                                className={commonStyles.bigInput}
+                                placeholder={'Email'}
+                                onChange={changeHandlerEmail}
                             />
                         </div>
                     </div>
                     <div>
-                        <span>Password</span>
-                        <div className={style.input}>
-                            <input
-                                type={'password'}
-                                placeholder={'enter password'}
-                                onInput={changeHandlerPassword}
+                        <div className={commonStyles.inputWrapper}>
+                            <SuperInputText
+                                type={visibleInput ? 'text' : 'password'}
+                                name={'password'}
+                                placeholder={'Password'}
+                                className={commonStyles.bigInput}
+                                onChange={changeHandlerPassword}
                             />
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                onChange={changeHandlerRememberMe}
-                            /> rememberMe?
+                            <img className={commonStyles.bigViewImg}
+                                 onClick={() => setVisibleInput(!visibleInput)}
+                                 src={visibleInput ? noView : view}
+                                 alt={'view'}/>
                         </div>
                     </div>
-                </div>
-                <div className={style.forgotPassword}>
-                    <div><a href="/forgot">forgot password</a></div>
+                    <div className={style.rememberMe}>
+                        <SuperCheckbox
+                            type="checkbox"
+                            id={'rememberMe'}
+                            onChange={changeHandlerRememberMe}
+                        /><label htmlFor={'rememberMe'}>Remember me</label>
+                    </div>
                 </div>
                 <div className={style.footerBlock}>
-                    <button
-                        onClick={handlerSubmit}
-                        type={'submit'}
-                        className={style.button}>Login
-                    </button>
-                    <div><a href="/register">don't have an account?</a></div>
-                    <div><a href="/register">Sign up</a></div>
+                    <div className={commonStyles.errorWrapper}>
+                        {error && <span className={commonStyles.error}>{error}</span>}
+                    </div>
+                    <div className={style.buttonWrapper}>
+                        {status === 'loading' ? <Loader/> :
+                            <SuperButton
+                                onClick={handlerSubmit}
+                                disabled={!!error}
+                                className={commonStyles.bigButton}
+                            >
+                                Login
+                            </SuperButton>
+                        }
+                    </div>
+                    <div><Link to={PATH.REMINDER}>forgot password?</Link></div>
+                    <div><Link to={PATH.REGISTRATION}>don't have an account?</Link></div>
                 </div>
             </div>
         </div>
     );
-};
+}

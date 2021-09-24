@@ -1,12 +1,12 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
-import thunk, {ThunkAction} from 'redux-thunk';
-import {ActionTypes, loginReducer} from './login-reducer';
+import thunk from 'redux-thunk';
+import {loginReducer} from './login-reducer';
 import {appReducer} from './app-reducer';
-import {ActionRegistrationTypes, registrationReducer} from './registerReducer'
+import {registrationReducer} from './register-reducer'
 
 const rootReducer = combineReducers({
     login: loginReducer,
-    registration: registrationReducer
+    registration: registrationReducer,
     app: appReducer,
 })
 
@@ -14,9 +14,7 @@ export const store = createStore(rootReducer, applyMiddleware(thunk));
 
 
 // Types
-type ActionsType = ActionTypes | ActionRegistrationTypes
 export type AppStateType = ReturnType<typeof rootReducer>;
-export type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 //@ts-ignore
 window.store = store.getState()

@@ -5,10 +5,12 @@ import SuperInputText from '../../main/ui/common/SuperInputText/SuperInputText';
 import styles from './Reminder.module.css';
 import Loader from '../../main/ui/common/Loader/Loader';
 import {PassRecovery} from '../PassRecovery/PassRecovery';
-import {cleanUpState, reminderPassword, ResponseStatusType, setAppError} from '../../main/bll/app-reducer';
+import {ResponseStatusType, setAppError} from '../../main/bll/app-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../main/bll/store';
 import forgotIcon from '../../main/ui/images/icon/forgot.png';
+import {cleanup} from '../../main/helpers/clean';
+import {reminderPassword} from '../../main/bll/login-reducer';
 
 export const Reminder = () => {
         const [email, setEmail] = useState<string>('');
@@ -17,11 +19,8 @@ export const Reminder = () => {
 
         const dispatch = useDispatch();
 
-        const cleanup = () => {
-            dispatch(cleanUpState());
-        }
         useEffect(() => {
-            return cleanup;
+            return () => cleanup(dispatch);
         }, []);
 
         const sendMailHandler = () => {

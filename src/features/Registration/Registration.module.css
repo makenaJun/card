@@ -4,10 +4,16 @@
     align-items: center;
     height: 100vh;
 }
+
 .container {
-    border: 2px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #f1f1f1;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
     width: 300px;
-}
-.error {
-    color: red;
+    padding: 20px;
 }
