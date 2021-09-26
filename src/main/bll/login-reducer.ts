@@ -4,6 +4,7 @@ import {ForgotRequestDataType, loginApi, LoginParamsType, LoginResponseType} fro
 import {mailMessageData} from '../helpers/mailMessageGen';
 import {ThunkAction} from 'redux-thunk';
 import {AppStateType} from './store';
+import {handlerAppError} from '../helpers/responseProcessing';
 
 const initialState = {
     isAuth: false,
@@ -30,8 +31,6 @@ export const successLogoutAC = (isAuth: boolean) => ({type: 'cards/login/SUCCESS
 
 //THUNKS
 
-//TODO error handler function
-
 export const isAuth = (): ThunkDispatchType => async (dispatch) => {
     try {
         dispatch(setAppStatus('loading'));
@@ -39,10 +38,8 @@ export const isAuth = (): ThunkDispatchType => async (dispatch) => {
         dispatch(successLoginAC(res.data, true));
         dispatch(setAppStatus('success'));
 
-    } catch (err: any) {
-        const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-        dispatch(setAppError(error));
-        dispatch(setAppStatus('failed'));
+    } catch (error) {
+        handlerAppError(error, dispatch);
     }
 }
 export const login = (data: LoginParamsType): ThunkDispatchType => async (dispatch) => {
@@ -52,10 +49,8 @@ export const login = (data: LoginParamsType): ThunkDispatchType => async (dispat
         dispatch(successLoginAC(res.data, true));
         dispatch(setAppStatus('success'));
 
-    } catch (err: any) {
-        const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-        dispatch(setAppError(error));
-        dispatch(setAppStatus('failed'));
+    } catch (error) {
+        handlerAppError(error, dispatch);
     }
 }
 
@@ -67,10 +62,8 @@ export const logout = (): ThunkDispatchType => async (dispatch) => {
         dispatch(successLogoutAC(false))
         dispatch(setAppStatus('success'));
 
-    } catch (err: any) {
-        const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-        dispatch(setAppError(error));
-        dispatch(setAppStatus('failed'));
+    } catch (error) {
+        handlerAppError(error, dispatch);
     }
 }
 
@@ -92,10 +85,8 @@ export const reminderPassword = (email: string): ThunkDispatchType => {
             } else {
                 dispatch(setAppError('Not valid Email'));
             }
-        } catch (err: any) {
-            const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-            dispatch(setAppError(error));
-            dispatch(setAppStatus('failed'));
+        } catch (error) {
+            handlerAppError(error, dispatch);
         }
     }
 }
@@ -110,10 +101,8 @@ export const setNewPassword = (token: string, password: string): ThunkDispatchTy
             }
             await loginApi.setNewPassword(payload);
             dispatch(setAppStatus('success'));
-        } catch (err: any) {
-            const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-            dispatch(setAppError(error));
-            dispatch(setAppStatus('failed'));
+        } catch (error) {
+            handlerAppError(error, dispatch);
         }
     }
 }

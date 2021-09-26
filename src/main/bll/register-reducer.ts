@@ -1,7 +1,8 @@
-import {setAppError, SetAppErrorActionsType, setAppStatus, SetAppStatusActionsType} from './app-reducer';
+import {SetAppErrorActionsType, setAppStatus, SetAppStatusActionsType} from './app-reducer';
 import {loginApi, RegisterParamsType} from '../dal/login-api';
 import {ThunkAction} from 'redux-thunk';
 import {AppStateType} from './store';
+import {handlerAppError} from '../helpers/responseProcessing';
 
 const initState = {
     isRegSuccess: false,
@@ -33,10 +34,8 @@ export const registration = (data: RegisterParamsType): ThunkDispatchType =>
             await loginApi.registration(data);
             dispatch(changeRegistrationStatus(true));
             dispatch(setAppStatus('success'));
-        } catch (err: any) {
-            const error = err.response ? err.response.data.error : (err.message + ', more details in the console');
-            dispatch(setAppError(error));
-            dispatch(setAppStatus('failed'));
+        } catch (error) {
+            handlerAppError(error, dispatch);
         }
     }
 export type InitialRegisterStateType = typeof initState;
