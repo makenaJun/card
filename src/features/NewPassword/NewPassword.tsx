@@ -3,7 +3,7 @@ import SuperButton from '../../main/ui/common/SuperButton/SuperButton';
 import styles from './NewPassword.module.css'
 import view from '../../main/ui/images/icon/view.svg';
 import noView from '../../main/ui/images/icon/no-view.svg';
-import {Redirect, useLocation} from 'react-router-dom';
+import {Redirect, useParams} from 'react-router-dom';
 import {PATH} from '../../main/ui/routes/Routes';
 import Loader from '../../main/ui/common/Loader/Loader';
 import {ResponseStatusType, setAppError} from '../../main/bll/app-reducer';
@@ -29,9 +29,7 @@ export const NewPassword = () => {
     const status = useSelector<AppStateType, ResponseStatusType>(state => state.app.status);
 
     const dispatch = useDispatch();
-    const location = useLocation();
-
-    const token = location.pathname.split('/')[2];
+    const {token} = useParams<{ token: string }>();
 
     useEffect(() => {
         return () => cleanup(dispatch);
@@ -41,6 +39,8 @@ export const NewPassword = () => {
         const identical = onePassword === twoPassword;
         if (!identical) {
             dispatch(setAppError(`Passwords don't match!`));
+        } else if (!token) {
+            dispatch(setAppError(`Bad token!`));
         } else {
             dispatch(setNewPassword(token, onePassword));
         }
@@ -55,9 +55,9 @@ export const NewPassword = () => {
             <img src={newPassIcon} alt={'New Password'}/>
             <div className={commonStyles.inputWrapper}>
                 <SuperInputText type={visibleOneInput ? 'text' : 'password'}
-                       value={onePassword}
-                       onChange={(e) => setOnePassword(e.currentTarget.value)}
-                       placeholder={'New password'}/>
+                                value={onePassword}
+                                onChange={(e) => setOnePassword(e.currentTarget.value)}
+                                placeholder={'New password'}/>
 
                 <img className={commonStyles.viewImg}
                      onClick={() => setVisibleOneInput(!visibleOneInput)}
@@ -67,9 +67,9 @@ export const NewPassword = () => {
 
             <div className={commonStyles.inputWrapper}>
                 <SuperInputText type={visibleTwoInput ? 'text' : 'password'}
-                       value={twoPassword}
-                       onChange={(e) => setTwoPassword(e.currentTarget.value)}
-                       placeholder={'Repeat new password'}/>
+                                value={twoPassword}
+                                onChange={(e) => setTwoPassword(e.currentTarget.value)}
+                                placeholder={'Repeat new password'}/>
 
                 <img src={visibleTwoInput ? noView : view}
                      className={commonStyles.viewImg}

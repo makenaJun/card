@@ -7,7 +7,8 @@ export const PATH = {
     REGISTRATION: '/register',
     REMINDER: '/reminder',
     PASS_RECOVERY: '/passrecovery',
-    NEW_PASS: '/newpass',
+    NEW_PASS: '/newpass/:token',
+    NEW_PASSWORD_ONLY_FOR_MAIL: '/newpass',
     ERROR404: '/404',
     TEST: '/test',
 };
